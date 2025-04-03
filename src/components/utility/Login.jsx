@@ -1,6 +1,15 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -26,6 +35,7 @@ function Login() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      password: "",
     },
   });
 
@@ -37,12 +47,15 @@ function Login() {
     console.log(values);
     const asyncOperation = new Promise((resolve) => {
       const username = values?.username;
-      if ("Vinoth" === username) {
+      const password = values?.password;
+      if ("Vinoth" === username || "test" === password) {
         console.log("Setting up Auth");
         localStorage.setItem(
           "user",
+          "password",
           JSON.stringify({
             name: "Vinoth",
+            // password: "test",
             role: ["admin"],
             auth: true,
           })
@@ -57,30 +70,66 @@ function Login() {
     });
   }
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter Username" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-    // <div>
-    //   <h1 className="text-primary">Welcome My Login</h1>;
-    // </div>
+    <Card className={cn("w-[600px]", "h-[100%]", "p-4")}>
+      <CardHeader>
+        <CardTitle> Welcome My Login</CardTitle>
+      </CardHeader>
+      <div className="flex">
+        <div className="w-3/2 space-y-8 my-3 p-6">
+          {/* <h2 className="text-primary"> My portfolio</h2> */}
+          <CardContent>
+            This is My portfolio Using Componets,redux.
+            <p>
+              <span>Username:Vinoth</span>
+            </p>
+            <p>
+              <span>Passoword:test</span>
+            </p>
+          </CardContent>
+        </div>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-4/2 space-y-8"
+          >
+            {/* <CardHeader>
+              <CardTitle> Welcome My Login</CardTitle>
+            </CardHeader> */}
+
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username(Vinoth)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter Username" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter password" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Submit</Button>
+          </form>
+        </Form>
+      </div>
+    </Card>
   );
 }
 
